@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %} 
+{% block title %}Welcome to Orders!{%endblock %} 
+{% block body %}
+
+<h1>Pedidos ✅</h1>
+
+<div class="row">
+    <div class="col text-end pb-2">
+        <a class="btn btn-primary" href="{{ url('order_create') }}">Nuevo pedido</a>
+    </div>
+</div>
+
+{% if status == 'cancel' %}
+    <h2 style="color: red">Pedido cancelado.</h2>
+{% endif %}
+
+{% if not orders %}
+    <div class="alert alert-info" role="alert">No hay pedidos registrados.</div>
+{% endif %}
+
+{% if orders %}
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Creado</th>
+        <th>Monto</th>
+        <th>Estado</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>
+            {{ order.created|format_datetime('full', 'short', locale='es') }}
+        </td>
+        <td>{{ order.amount }}</td>
+        <td>{{ order.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %} 
+
+{% endblock %}

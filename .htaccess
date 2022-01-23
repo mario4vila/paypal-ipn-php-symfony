@@ -1,0 +1,18 @@
+# Apache configuration file
+# http://httpd.Apache.org/docs/2.2/mod/quickreference.html
+
+
+#Activamos la reescritura SI SOLO SI el mod_rewrite se encuentra para evitar errores 500
+<IfModule mod_rewrite.c>
+    # Es necesario activar mod_rewrite para las siguientes reglas y
+    # características. "+ FollowSymLinks" debe estar habilitado para que esto funcione simbólicamente y permitimos la indexación.
+    Options +FollowSymLinks -Indexes
+    RewriteEngine On
+
+    # Antes de redireccionar, se verifica que la petición no sea a un directorio o archivo existente
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Si el archivo/directorio no existe, redireccionamos
+    RewriteRule ^(.*)$ public/index.php/$1 [L]
+</IfModule>
