@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\OrderRepository;
+use App\Service\Order\Create\OrderCreator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +45,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/process_order_paypal', name: 'process_order_paypal')]
-    public function processPaypal(Request $request): Response
+    public function processPaypal(Request $request, OrderCreator $orderCreator): Response
     {
         // Para cambiar al entorno de producción usar: www.paypal.com
         $paypalHostname = $this->getParameter('paypal.host');
@@ -99,30 +100,30 @@ class OrderController extends AbstractController
                 $keyarray[urldecode($temp[0])] = urldecode($temp[1]);
             }
 
-            // Verificamos que el estado de pago esté Completado
-            // Comprobamos que txn_id no ha sido procesado previamente
-            // Verificamos que el importe de pago y la moneda de pago sean correctos
-
             // En el siguiente enlace puedes encontrar una lista completa de Variables IPN y PDT.
             // https://developer.paypal.com/docs/api-basics/notifications/ipn/IPNandPDTVariables/
-
             $mc_gross       = $keyarray['mc_gross'];
             $mc_currency    = $keyarray['mc_currency'];
             $payment_status = $keyarray['payment_status'];
             $quantity       = $keyarray['quantity'];
             $item_name      = $keyarray['item_name'];
+            $txn_id         = $keyarray['txn_id'];
 
 
             // Verificamos que el estado de pago esté Completado
             if ($payment_status != "Completed") {
                 return $this->create('El pago no ha sido completado.', 'danger');
             }
+
             // Comprobamos que txn_id no ha sido procesado previamente
+
             // Verificamos que el importe de pago y la moneda de pago sean correctos
             if ($mc_currency != "EUR") {
                 $msg = "La moneda no es la correcta.";
                 return $this->create($msg, 'danger');
             }
+
+            $orderCreator->execute($mc_gross, $txn_id);
 
             $msg = "<h1>¡Hemos procesado tu pago exitosamente!</h1> 
                     Recibimos $mc_gross Euros en concepto de: $quantity $item_name.<hr>

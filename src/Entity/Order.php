@@ -29,9 +29,17 @@ class Order
     private $amount;
 
     /**
-     * @ORM\Column(name="status", type="string", columnDefinition="enum('Pending', 'Completed')")
+     * @ORM\Column(name="status", type="string", length=255, nullable=true)
      */
     private $status;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $transactionId;
+
+    const PENDING   = 'pending';
+    const COMPLETED = 'completed';
 
     public function getId(): ?int
     {
@@ -70,6 +78,18 @@ class Order
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getTransactionId(): ?string
+    {
+        return $this->transactionId;
+    }
+
+    public function setTransactionId(?string $transactionId): self
+    {
+        $this->transactionId = $transactionId;
 
         return $this;
     }
