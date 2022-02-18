@@ -18,11 +18,7 @@
     </div>
 {% endif %}
 
-<form action="https://{{paypalHost}}/cgi-bin/webscr" method="post" id="form_pay">
-
-    <!-- Valores requeridos -->
-    <input type="hidden" name="business" value="{{paypalBusiness}}">
-    <input type="hidden" name="cmd" value="_xclick">
+<form action="{{ url('create_order') }}" method="post" id="form_pay">
 
     <label for="item_name" class="form-label">item_name</label>
     <input type="text" name="item_name" id="" value="Lampara de escritorio" required=""><br>
@@ -30,23 +26,9 @@
     <label for="amount" class="form-label">amount</label>
     <input type="text" name="amount" id="" value="13.00" required=""><br>
 
-    <input type="hidden" name="currency_code" value="EUR">
 
     <label for="quantity" class="form-label">quantity</label>
     <input type="text" name="quantity" id="" value="2" required=""><br>
-
-    <!-- Valores opcionales -->
-    <!-- En el siguiente enlace puedes encontrar una lista completa de Variables HTML para pagos estándar de PayPal. -->
-    <!-- https://developer.paypal.com/docs/paypal-payments-standard/integration-guide/Appx-websitestandard-htmlvariables/ -->
-
-    <input type="hidden" name="item_number" value="1">
-    <!-- <input type="hidden" name="invoice" value="0012"> -->
-
-    <input type="hidden" name="lc" value="es_ES">
-    <input type="hidden" name="no_shipping" value="1">
-    <input type="hidden" name="image_url" value="https://picsum.photos/150/150">
-    <input type="hidden" name="return" value="{{ url('process_order_paypal') }}">
-    <input type="hidden" name="cancel_return" value="{{ url('orders', {status: 'cancel'}) }}">
 
     <hr>
 

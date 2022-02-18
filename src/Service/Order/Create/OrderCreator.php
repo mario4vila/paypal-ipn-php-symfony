@@ -11,15 +11,17 @@ final class OrderCreator
     {
     }
 
-    public function execute(float $amount, string $trasactionId): void
+    public function execute(float $amount, string $trasactionId): Order
     {
         $order = new Order();
         $created = new \DateTimeImmutable();
         $order->setCreated($created);
         $order->setAmount($amount);
-        $order->setStatus(Order::COMPLETED);
+        $order->setStatus(Order::PENDING);
         $order->setTransactionId($trasactionId);
         $this->entityManager->persist($order);
         $this->entityManager->flush();
+
+        return $order;
     }
 }
