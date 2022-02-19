@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col text-end pb-2">
-        <a class="btn btn-warning" href="{{ url('orders') }}">Volver</a>
+        <a class="btn btn-warning" href="{{ url('orders') }}">Pedidos</a>
     </div>
 </div>
 
@@ -18,17 +18,17 @@
     </div>
 {% endif %}
 
-<form action="{{ url('create_order') }}" method="post" id="form_pay">
+<form action="{{ url('create_order') }}" method="post" id="form_pay" class="form">
 
-    <label for="item_name" class="form-label">item_name</label>
-    <input type="text" name="item_name" id="" value="Lampara de escritorio" required=""><br>
+    <label for="item_name" class="form-label">Nombre de producto</label>
+    <input type="text" name="item_name" id="item_name" class="form-control" value="Lampara de escritorio" required=""><br>
 
-    <label for="amount" class="form-label">amount</label>
-    <input type="text" name="amount" id="" value="13.00" required=""><br>
+    <label for="amount" class="form-label">Precio</label>
+    <input type="text" name="amount" id="amount" class="form-control" value="13.00" required=""><br>
 
 
-    <label for="quantity" class="form-label">quantity</label>
-    <input type="text" name="quantity" id="" value="2" required=""><br>
+    <label for="quantity" class="form-label">Cantidad</label>
+    <input type="text" name="quantity" id="quantity" class="form-control" value="2" required=""><br>
 
     <hr>
 
